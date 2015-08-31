@@ -20,9 +20,14 @@ try:
 
 	for i in range(0, num):
 		link = "http://" + images[i]['href'][2:]
-		filename = threadID + str(i) + ".jpg"
-		print link
-		print filename
+		if link[-3:] == "jpg":
+			filename = threadID + str(i) + ".jpg"
+		elif link[-3:] == "png":
+			filename = threadID + str(i) + ".png"
+		elif link[-3:] == "gif":
+			filename = threadID + str(i) + ".gif"
+		print "Downloading ", link
+		print "Saving as, ", filename
 		resource = urllib.urlopen(link)
 		output = open(os.path.join(directory + threadID, filename), 'wb')
 		output.write(resource.read())
