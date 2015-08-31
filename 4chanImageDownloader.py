@@ -3,25 +3,37 @@ import urllib, urllib2
 import os
 import sys
 
-if len(sys.argv) > 1:
+#Where we want to store all images
+directory = "/home/pat/Pictures/Wallpapers/"
+
+try:
 	print "Grabbing images from thread: " + sys.argv[1]
-	url = sys.argv[1]
-	thread = urllib2.urlopen('https://boards.4chan.org/wg/thread/6302506/caturday')
-	threadID = url.split('/')[-1]
+	thread = urllib2.urlopen(sys.argv[1])
+	threadID = sys.argv[1].split('/')[-1]
 	print "threadID: " + threadID
 	soup = BeautifulSoup(thread)
 	images = soup.findAll('a',attrs={'class':'fileThumb'})
 	num = len(images)
+
+	if not os.path.exists(directory + threadID):
+		os.makedirs(directory + threadID)
+
 	for i in range(0, num):
 		link = "http://" + images[i]['href'][2:]
-		filename = link.split('/')[-1]
+		filename = threadID + str(i) + ".jpg"
 		print link
 		print filename
 		resource = urllib.urlopen(link)
-		output = open(os.path.join('/home/pat/Pictures/Wallpapers', filename), 'wb')
+		output = open(os.path.join(directory + threadID, filename), 'wb')
 		output.write(resource.read())
 		output.close()
 
-	print "Saved " + num + " Images"
-else:
-	print "Invalid Number of Arguments"
+	print "Saved ", num, " Images"
+except IndexError, e:
+	print "Invalid Number of Arguments: " + str(e)
+except OSError, e:
+	print str(e)
+except urllib2.URLError, e:
+	print str(e)
+except urllib2.HTTPError, e:
+	print str(e)
