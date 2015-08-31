@@ -4,4 +4,4 @@ For now it saves them in a folder using a specific directory that is hard-coded 
 
 Libraries: BeautifulSoup, urllib/urllib2, os, sys
 
-```Use: python 4chanImageDownloader <url>```
+Use:```python 4chanImageDownloader <url>```
